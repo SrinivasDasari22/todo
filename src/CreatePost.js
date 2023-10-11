@@ -8,9 +8,13 @@ export default function CreatePost ({user, handleAddPost}) {
     const[description, setDescription] = useState("");
 
     const date = new Date();
-    const[dateCreated, setDateCreated] = useState(date.toDateString());
+    const[dateCreated, setDateCreated] = useState(date.toDateString()+"  "+date.toLocaleTimeString());
 
-    // const[completed, setCompleted] = useState(false);
+    
+    // const[dateCreated, setDateCreated] = useState(Date.now());
+
+
+    const[completed, setCompleted] = useState(false);
 
     
 
@@ -43,6 +47,7 @@ export default function CreatePost ({user, handleAddPost}) {
             description: description,
             dateCreated : dateCreated,
             author: user,
+            completed: completed
         }
 
         handleAddPost(newPost);
@@ -72,9 +77,10 @@ export default function CreatePost ({user, handleAddPost}) {
             </div>
             <br/>
             <div>
-                <label htmlFor="dateCreated">Date Created: </label>
+                <label htmlFor="dateCreated">Date Created:</label>
+                
 
-                <input type ="text" name ="dateCreated" id ="dateCreated" value={dateCreated}  disabled  style={{ marginLeft: '7px' }} />
+                <input type ="text" name ="dateCreated" id ="dateCreated" value={dateCreated}  disabled  style={{ marginLeft: '7px', width: '14%' }} />
             </div>
             <br/>
             

@@ -1,10 +1,10 @@
 import { useState } from "react"
 
-export default function Post ({ title, description, dateCreated,  author}) {
+export default function Post ({ title, description, dateCreated,  author, completed, functionCheck}) {
 
     // const bool = false;
 
-    const[bool,setBool] = useState(false);
+    //const[bool,setBool] = useState(false);
 
 
 
@@ -12,16 +12,17 @@ export default function Post ({ title, description, dateCreated,  author}) {
     // const[dateCreated, setDateCreated] = useState(date.toDateString());
 
     function handleCheck(){
-        setBool(!bool);
+        //setBool(!bool);
+        functionCheck(title);
     }
 
     function renderDateCompleted(){
-        if(bool){
+        if(completed){
             return(
             <>
             <br/>
             <i>
-                Completed Date:&nbsp; &nbsp;<b>{date.toDateString()}</b>
+                Completed Date:&nbsp; &nbsp;<b>{date.toDateString()+"  "+date.toLocaleTimeString()}</b>
             </i>
             </>
             );
@@ -43,7 +44,7 @@ export default function Post ({ title, description, dateCreated,  author}) {
                     <br/>
                 <i>
                     <label htmlFor="dateCompleted">Task Completed?: </label>
-                    <input type ="checkbox" name ="dateCompleted" id ="dateCompleted" checked={bool} onChange={handleCheck} />
+                    <input type ="checkbox" name ="dateCompleted" id ="dateCompleted" checked={completed} onChange={handleCheck} />
                 </i> 
                 {renderDateCompleted()}
                 <br/>

@@ -36,6 +36,16 @@ function App() {
     setPosts([newPost, ...posts]);
   }
 
+  const functionCheck = (title)=>{
+    let copyPosts = [...posts];
+    copyPosts.forEach((val)=>{
+      if(val.title == title){
+        val.completed = !val.completed;
+      }
+    });
+    setPosts(copyPosts);
+  };
+
   
 
 
@@ -49,7 +59,7 @@ function App() {
       </div>
       < div>
         <h2>ToDo List : </h2>
-        <PostList posts={posts} />
+        <PostList posts={posts} functionCheck = {functionCheck}/>
       </div>
     </div>
   );
