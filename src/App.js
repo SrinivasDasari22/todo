@@ -1,11 +1,17 @@
-
-import { useState } from "react";
+import { useReducer } from "react";
 import CreatePost from "./CreatePost";
 import PostList from "./PostList";
 import UserBar from "./UserBar";
-function App() {
+import appReducer from "./Reducer";
 
-  const [user,setUser] = useState('');
+function App() {
+  const [state, dispatch] = useReducer(appReducer, {
+    user: "",
+    posts: [],
+  });
+
+  const { user, posts } = state;
+
   // const todos = [
   //   {
   //     title: 'Task 1',
@@ -28,39 +34,19 @@ function App() {
   //   },
   // ];
 
-
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
 
   const handleAddPost = (newPost) => {
-    
-    setPosts([newPost, ...posts]);
-  }
-
-  const functionCheck = (title)=>{
-    let copyPosts = [...posts];
-    copyPosts.forEach((val)=>{
-      if(val.title == title){
-        val.completed = !val.completed;
-      }
-    });
-    setPosts(copyPosts);
+    dispatch({ type: "CREATE_POST", ...newPost });
   };
 
-  
-
-
   return (
-    <div style={{ padding: '10px' }}>
-      
-      <UserBar user={user} setUser={setUser}/>
-      <div >
-        <h2>Create ToDo's: </h2>
-        <CreatePost user={user} handleAddPost={handleAddPost}/>
+    <div style={{ padding: "10px" }}>
+      <UserBar user={user} dispatchUser={dispatch} />
+      <div>
+        {user && <CreatePost user={user} handleAddPost={handleAddPost} />}
       </div>
-      < div>
-        <h2>ToDo List : </h2>
-        <PostList posts={posts} functionCheck = {functionCheck}/>
-      </div>
+      <PostList posts={posts} dispatchPosts={dispatch} />
     </div>
   );
 }
