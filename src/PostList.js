@@ -1,13 +1,18 @@
+import { useContext } from "react";
 import Post from "./Post";
 import { v4 as uuid } from "uuid";
+import { StateContext } from "./contexts";
 
-export default function PostList({ posts, dispatchPosts }) {
+export default function PostList() {
+  const { state } = useContext(StateContext);
+  const { posts } = state;
+
   if (posts.length > 0) {
     return (
       <>
         <h2>ToDo List : </h2>
         {posts.map((p, i) => (
-          <Post {...p} key={uuid()} dispatchPosts={dispatchPosts} />
+          <Post {...p} key={uuid()} />
         ))}
       </>
     );

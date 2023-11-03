@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { StateContext } from "./contexts";
 
-export default function Register({ dispatchUser }) {
+export default function Register() {
+  const { dispatch } = useContext(StateContext);
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPass, setRepeatPass] = useState("");
@@ -19,7 +21,7 @@ export default function Register({ dispatchUser }) {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        dispatchUser({ type: "REGISTER", userName });
+        dispatch({ type: "REGISTER", userName });
       }}
     >
       <label htmlFor="register-username" style={{ marginRight: "74px" }}>

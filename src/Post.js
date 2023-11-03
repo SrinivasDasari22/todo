@@ -1,3 +1,6 @@
+import { useContext } from "react";
+import { StateContext } from "./contexts";
+
 export default function Post({
   title,
   description,
@@ -5,16 +8,17 @@ export default function Post({
   author,
   completed,
   id,
-  dispatchPosts,
 }) {
+  const { dispatch } = useContext(StateContext);
+
   const date = new Date();
 
   function handleCheck() {
-    dispatchPosts({ type: "TOGGLE_POST", id });
+    dispatch({ type: "TOGGLE_POST", id });
   }
 
   function handleDelete() {
-    dispatchPosts({ type: "DELETE_POST", id });
+    dispatch({ type: "DELETE_POST", id });
   }
 
   function renderDateCompleted() {

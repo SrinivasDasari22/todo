@@ -1,14 +1,19 @@
+import { useContext } from "react";
 import Login from "./Login";
 import Logout from "./Logout";
 import Register from "./Register";
+import { StateContext } from "./contexts";
 
-export default function UserBar({ user, dispatchUser }) {
+export default function UserBar() {
+  const { state, dispatch } = useContext(StateContext);
+  const { user } = state;
+
   if (user) {
     return (
       <div>
         <h2>Logout Form: </h2>
         <div style={{ padding: "10px" }}>
-          <Logout user={user} dispatchUser={dispatchUser} />
+          <Logout />
         </div>
       </div>
     );
@@ -18,11 +23,11 @@ export default function UserBar({ user, dispatchUser }) {
         <h2>Login/Registartion Form: </h2>
         <div style={{ display: "flex", padding: "10px" }}>
           <div>
-            <Login dispatchUser={dispatchUser} />
+            <Login/>
           </div>
           <br />
           <div style={{ marginLeft: "30px" }}>
-            <Register dispatchUser={dispatchUser} />
+            <Register/>
           </div>
         </div>
       </div>

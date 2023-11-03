@@ -3,6 +3,7 @@ import CreatePost from "./CreatePost";
 import PostList from "./PostList";
 import UserBar from "./UserBar";
 import appReducer from "./Reducer";
+import { StateContext } from "./contexts";
 
 function App() {
   const [state, dispatch] = useReducer(appReducer, {
@@ -10,7 +11,7 @@ function App() {
     posts: [],
   });
 
-  const { user, posts } = state;
+  const { user } = state;
 
   // const todos = [
   //   {
@@ -36,18 +37,18 @@ function App() {
 
   // const [posts, setPosts] = useState([]);
 
-  const handleAddPost = (newPost) => {
-    dispatch({ type: "CREATE_POST", ...newPost });
-  };
+  // const handleAddPost = (newPost) => {
+  //   dispatch({ type: "CREATE_POST", ...newPost });
+  // };
 
   return (
-    <div style={{ padding: "10px" }}>
-      <UserBar user={user} dispatchUser={dispatch} />
-      <div>
-        {user && <CreatePost user={user} handleAddPost={handleAddPost} />}
+    <StateContext.Provider value={{ state, dispatch }}>
+      <div style={{ padding: "10px" }}>
+        <UserBar />
+        <div>{user && <CreatePost />}</div>
+        <PostList />
       </div>
-      <PostList posts={posts} dispatchPosts={dispatch} />
-    </div>
+    </StateContext.Provider>
   );
 }
 

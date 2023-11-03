@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { v4 as uuid } from "uuid";
+import { StateContext } from "./contexts";
 
-export default function CreatePost({ user, handleAddPost }) {
+export default function CreatePost() {
+  const { state, dispatch } = useContext(StateContext);
+  const { user } = state;
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
@@ -28,8 +32,10 @@ export default function CreatePost({ user, handleAddPost }) {
       completed: completed,
       id: uuid(),
     };
+    dispatch({ type: "CREATE_POST", ...newPost });
+    console.log("posts", newPost);
 
-    handleAddPost(newPost);
+    // handleAddPost(newPost);
   }
 
   return (

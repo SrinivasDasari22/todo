@@ -16,7 +16,7 @@ function postReducer(state, action) {
     case "CREATE_POST":
       const newPost = {
         title: action.title,
-        description: action.content,
+        description: action.description,
         dateCreated: action.dateCreated,
         author: action.author,
         completed: action.completed,

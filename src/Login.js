@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
-export default function Login({ dispatchUser }) {
+import { StateContext } from "./contexts";
+
+export default function Login() {
+  const { dispatch } = useContext(StateContext);
+
   const [userName, setUserName] = useState("");
 
   function handleUserName(evt) {
@@ -11,7 +15,7 @@ export default function Login({ dispatchUser }) {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        dispatchUser({ type: "LOGIN", userName });
+        dispatch({ type: "LOGIN", userName });
       }}
       style={{ marginRight: "30px" }}
     >
