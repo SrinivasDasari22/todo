@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { StateContext } from "./contexts";
+import { useResource } from "react-request-hook";
 
 export default function Post({
   title,
@@ -8,16 +9,50 @@ export default function Post({
   author,
   completed,
   id,
+  dateCompleted,
 }) {
+  const date = new Date();
   const { dispatch } = useContext(StateContext);
 
-  const date = new Date();
+  const [updatedPost, updatePost] = useResource((post) => ({
+    url: `/posts/${post.id}`,
+    method: "put",
+    data: post,
+  }));
+
+  const [deletedPost, deletePost] = useResource((post) => ({
+    url: `/posts/${post.id}`,
+    method: "delete",
+    data: post,
+  }));
 
   function handleCheck() {
-    dispatch({ type: "TOGGLE_POST", id });
+    const updatedData = {
+      id: id,
+      title: title,
+      description: description,
+      dateCreated: dateCreated,
+      author: author,
+      dateCompleted: date.toDateString() + "  " + date.toLocaleTimeString(),
+      completed: !completed,
+    };
+    const { dateCompleted } = updatedData;
+    updatePost(updatedData);
+    dispatch({ type: "TOGGLE_POST", id, dateCompleted });
   }
 
   function handleDelete() {
+    const updatedData1 = {
+      id: id,
+      title: title,
+      description: description,
+      dateCreated: dateCreated,
+      author: author,
+      dateCompleted: dateCompleted,
+      completed: completed,
+    };
+
+    deletePost(updatedData1);
     dispatch({ type: "DELETE_POST", id });
   }
 
@@ -28,7 +63,7 @@ export default function Post({
           <br />
           <i>
             Completed Date:&nbsp; &nbsp;
-            <b>{date.toDateString() + "  " + date.toLocaleTimeString()}</b>
+            <b>{dateCompleted}</b>
           </i>
         </>
       );

@@ -20,6 +20,7 @@ function postReducer(state, action) {
         dateCreated: action.dateCreated,
         author: action.author,
         completed: action.completed,
+        dateCompleted: action.dateCompleted,
         id: action.id,
       };
       return [newPost, ...state];
@@ -31,6 +32,7 @@ function postReducer(state, action) {
       const updatedObject = {
         ...state[index],
         completed: toggleValue,
+        dateCompleted: action.dateCompleted,
       };
       const newState = [...state];
       newState[index] = updatedObject;
@@ -41,6 +43,9 @@ function postReducer(state, action) {
       const newState1 = [...state.slice(0, index1), ...state.slice(index1 + 1)];
 
       return newState1;
+
+    case "FETCH_POSTS":
+      return action.posts;
 
     default:
       return state;

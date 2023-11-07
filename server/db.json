@@ -1,0 +1,58 @@
+{
+  "posts": [
+    {
+      "title": "testiong 1",
+      "description": ",jbdfjlblnvn;lkm;vksdnks;n",
+      "dateCreated": "Mon Nov 06 2023  10:31:48 PM",
+      "author": "ds@gmail.com",
+      "completed": false,
+      "id": "c421cded-c49e-43b0-9743-dc3e55dd2afe",
+      "dateCompleted": "-"
+    },
+    {
+      "id": "1d006a15-dbae-42e0-9a88-a2f2bacc90f2",
+      "title": "testing 4",
+      "description": "jsblvjkfns;l",
+      "dateCreated": "Mon Nov 06 2023  10:33:15 PM",
+      "author": "ds@gmail.com",
+      "dateCompleted": "Mon Nov 06 2023  10:41:44 PM",
+      "completed": true
+    },
+    {
+      "id": "b0d69297-b9d1-4def-888f-60281a48fbb7",
+      "title": "sdjshkj",
+      "description": "jbjdfn",
+      "dateCreated": "Mon Nov 06 2023  10:42:46 PM",
+      "author": "ds@gmail.com",
+      "dateCompleted": "Mon Nov 06 2023  10:44:15 PM",
+      "completed": false
+    }
+  ],
+  "users": [
+    {
+      "email": "ds@gmail.com",
+      "password": "$2a$10$IhFliIucYJ.DTVyGrrwngeROfPNTU8eth76SKHFGVBOP1L4Whvkzu",
+      "id": 1
+    },
+    {
+      "email": "ddd@gmail.com",
+      "password": "$2a$10$QzsrpiyAHYvvY6eGkGuVr.TjPndHYKLbeyhrUuszFphPHan9dv9RW",
+      "id": 2
+    },
+    {
+      "email": "ds@net.com",
+      "password": "$2a$10$jgWx4FgujanM7ZwK7smEa.0KIlTAaat12JOuhNmcGECztl5h1coZy",
+      "id": 3
+    },
+    {
+      "email": "test@g.com",
+      "password": "$2a$10$P6hpzYX6Ru/62W1cEN2wD.Jy43ZN6lLILFVGVl3Y1sWbO4Fe0rj52",
+      "id": 4
+    },
+    {
+      "email": "testing@gmail.com",
+      "password": "$2a$10$P0U6coAS8SNY0DjoS5pW.OGCdNBC1pKZJmML4IVTzFHtIK35LwcR6",
+      "id": 5
+    }
+  ]
+}

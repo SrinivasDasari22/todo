@@ -1,8 +1,33 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import { StateContext } from "./contexts";
+import { useResource } from "react-request-hook";
 
 export default function CreatePost() {
+  const [post, createPost] = useResource(
+    ({
+      title,
+      description,
+      dateCreated,
+      author,
+      completed,
+      id,
+      dateCompleted,
+    }) => ({
+      url: "/posts",
+      method: "post",
+      data: {
+        title,
+        description,
+        dateCreated,
+        author,
+        completed,
+        id,
+        dateCompleted,
+      },
+    })
+  );
+
   const { state, dispatch } = useContext(StateContext);
   const { user } = state;
 
@@ -15,6 +40,7 @@ export default function CreatePost() {
   );
 
   const [completed, setCompleted] = useState(false);
+  const [dateCompleted, setDateCompleted] = useState("-");
 
   function handleTitle(evt) {
     setTitle(evt.target.value);
@@ -27,13 +53,15 @@ export default function CreatePost() {
     const newPost = {
       title: title,
       description: description,
-      dateCreated: dateCreated,
+      dateCreated: date.toDateString() + "  " + date.toLocaleTimeString(),
       author: user,
       completed: completed,
+      dateCompleted: dateCompleted,
       id: uuid(),
     };
+    createPost(newPost);
+
     dispatch({ type: "CREATE_POST", ...newPost });
-    console.log("posts", newPost);
 
     // handleAddPost(newPost);
   }

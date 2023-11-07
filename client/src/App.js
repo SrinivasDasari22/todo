@@ -1,9 +1,10 @@
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 import CreatePost from "./CreatePost";
 import PostList from "./PostList";
 import UserBar from "./UserBar";
 import appReducer from "./Reducer";
 import { StateContext } from "./contexts";
+import { useResource } from "react-request-hook";
 
 function App() {
   const [state, dispatch] = useReducer(appReducer, {
@@ -12,6 +13,25 @@ function App() {
   });
 
   const { user } = state;
+
+  const [posts, getPosts] = useResource(() => ({
+    url: "/posts",
+    method: "get",
+  }));
+
+  useEffect(getPosts, []);
+
+  useEffect(() => {
+    if (posts && posts.data) {
+      dispatch({ type: "FETCH_POSTS", posts: posts.data.reverse() });
+    }
+  }, [posts]);
+
+  // useEffect(() => {
+  //   fetch("/api/posts")
+  //     .then((result) => result.json())
+  //     .then((posts) => dispatch({ type: "FETCH_POSTS", posts }));
+  // }, []);
 
   // const todos = [
   //   {
