@@ -10,9 +10,9 @@ export default function Login() {
   const [userName, setUserName] = useState("");
 
   const [user, login] = useResource((username, password) => ({
-    url: "/login",
+    url: "auth/login",
     method: "post",
-    data: { email: username, password },
+    data: { username, password },
   }));
 
   // function effct() {
@@ -31,24 +31,35 @@ export default function Login() {
   //   }
   // }
 
+  // useEffect(() => {
+  //   if (user) {
+  //     if (user?.data?.user) {
+  //       dispatch({ type: "LOGIN", userName: user.data.user.email });
+  //     } else {
+  //     }
+  //   }
+  // }, [user, dispatch]);
+
+  // useEffect(() => {
+  //   if (user?.error) {
+  //     setLoginFailed(true);
+  //   } else {
+  //     setLoginFailed(false);
+  //   }
+  // }, [user]);
+
   useEffect(() => {
-    if (user) {
-      if (user?.data?.user) {
-      
-        dispatch({ type: "LOGIN", userName: user.data.user.email });
+    if (user && user.isLoading === false && (user.data || user.error)) {
+      if (user.error) {
+        setLoginFailed(true);
       } else {
-
+        setLoginFailed(false);
+        dispatch({
+          type: "LOGIN",
+          userName: user.data.username,
+          access_token: user.data.access_token,
+        });
       }
-    }
-  }, [user, dispatch]);
-
-  useEffect(() => {
-
-    if (user?.error) {
-      setLoginFailed(true);
-    } else {
-      setLoginFailed(false);
-
     }
   }, [user]);
 

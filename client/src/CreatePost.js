@@ -4,32 +4,23 @@ import { StateContext } from "./contexts";
 import { useResource } from "react-request-hook";
 
 export default function CreatePost() {
+  const { state, dispatch } = useContext(StateContext);
+  const { user } = state;
+
   const [post, createPost] = useResource(
-    ({
-      title,
-      description,
-      dateCreated,
-      author,
-      completed,
-      id,
-      dateCompleted,
-    }) => ({
-      url: "/posts",
+    ({ title, description, dateCreated, completed, dateCompleted }) => ({
+      url: "/post",
       method: "post",
+      headers: { Authorization: `${state?.user?.access_token}` },
       data: {
         title,
         description,
         dateCreated,
-        author,
         completed,
-        id,
         dateCompleted,
       },
     })
   );
-
-  const { state, dispatch } = useContext(StateContext);
-  const { user } = state;
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -54,17 +45,33 @@ export default function CreatePost() {
       title: title,
       description: description,
       dateCreated: date.toDateString() + "  " + date.toLocaleTimeString(),
-      author: user,
       completed: completed,
       dateCompleted: dateCompleted,
-      id: uuid(),
     };
     createPost(newPost);
-
-    dispatch({ type: "CREATE_POST", ...newPost });
-
-    // handleAddPost(newPost);
   }
+
+  
+
+  useEffect(() => {
+    if (post.isLoading === false && post.data) {
+      const newPost = {
+        title: title,
+        description: description,
+        dateCreated: date.toDateString() + "  " + date.toLocaleTimeString(),
+        author: post.data.author,
+        _id: post.data.id,
+        completed: completed,
+        dateCompleted: dateCompleted,
+      };
+      dispatch({
+        type: "CREATE_POST",
+        ...newPost,
+      });
+      setTitle("");
+      setDescription("");
+    }
+  }, [post]);
 
   return (
     <div>
@@ -74,8 +81,6 @@ export default function CreatePost() {
         onSubmit={(e) => {
           e.preventDefault();
           handleAddPostCreate();
-          setTitle("");
-          setDescription("");
         }}
       >
         <div style={{ padding: "10px" }}>
@@ -85,7 +90,7 @@ export default function CreatePost() {
               type="text"
               name="author"
               id="author"
-              value={user}
+              value={user.userName}
               disabled
               style={{ marginLeft: "50px" }}
             />

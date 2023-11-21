@@ -5,21 +5,33 @@ import { useResource } from "react-request-hook";
 export default function Register() {
   const { dispatch } = useContext(StateContext);
 
+  const [status, setStatus] = useState("");
+
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPass, setRepeatPass] = useState("");
 
-  const [user, register] = useResource((userName, password) => ({
-    url: "/users",
+  const [user, register] = useResource((username, password) => ({
+    url: "auth/register",
     method: "post",
-    data: { email: userName, password },
+    data: { username, password, passwordConfirmation: password },
   }));
 
+  // useEffect(() => {
+  //   if (user && user.data) {
+  //     dispatch({ type: "REGISTER", username: user.data.user.email });
+  //   }
+  // }, [user, dispatch]);
+
   useEffect(() => {
-    if (user && user.data) {
-      dispatch({ type: "REGISTER", username: user.data.user.email });
+    if (user && user.isLoading === false && (user.data || user.error)) {
+      if (user.error) {
+        setStatus("Registration failed, please try again later.");
+      } else {
+        setStatus("Registration successful. You may now login.");
+      }
     }
-  }, [user, dispatch]);
+  }, [user]);
 
   function handleUserName(evt) {
     setUserName(evt.target.value);
@@ -36,7 +48,7 @@ export default function Register() {
       onSubmit={(e) => {
         e.preventDefault();
         register(userName, password);
-        dispatch({ type: "REGISTER", userName });
+        // dispatch({ type: "REGISTER", userName });
       }}
     >
       <label htmlFor="register-username" style={{ marginRight: "74px" }}>
@@ -81,6 +93,7 @@ export default function Register() {
           userName.length === 0 || password.length !== repeatPass.length
         }
       />
+      <p>{status}</p>
     </form>
   );
 }

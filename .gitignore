@@ -5,6 +5,7 @@
 /.pnp
 /client/node_modules
 /server/node_modules
+server_express/blog-server/node_modules
 .pnp.js
 
 # testing
@@ -12,6 +13,8 @@
 
 # production
 /build
+
+.metals
 
 # misc
 .DS_Store

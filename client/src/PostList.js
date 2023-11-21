@@ -12,7 +12,7 @@ export default function PostList() {
       <>
         <h2>ToDo List : </h2>
         {posts.map((p, i) => (
-          <Post {...p} key={uuid()} />
+          <Post {...p} key={p._id || p.id} />
         ))}
       </>
     );

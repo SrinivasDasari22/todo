@@ -1,60 +1,71 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { StateContext } from "./contexts";
 import { useResource } from "react-request-hook";
 
 export default function Post({
   title,
   description,
+  _id,
   dateCreated,
   author,
   completed,
-  id,
   dateCompleted,
 }) {
+  // let id = _id;
+  console.log("ID:", _id);
   const date = new Date();
-  const { dispatch } = useContext(StateContext);
+  const { state, dispatch } = useContext(StateContext);
+  const { user } = state;
 
-  const [updatedPost, updatePost] = useResource((post) => ({
-    url: `/posts/${post.id}`,
-    method: "put",
-    data: post,
-  }));
-
-  const [deletedPost, deletePost] = useResource((post) => ({
-    url: `/posts/${post.id}`,
+  const [deletedPost, deletePost] = useResource((_id) => ({
+    url: `/post/${_id}`,
     method: "delete",
-    data: post,
+    headers: { Authorization: `${state?.user?.access_token}` },
+    data: _id,
   }));
+
+  const [updatedPost, updatePost] = useResource(
+    (_id, completed, dateCompleted) => ({
+      url: `/post/${_id}`,
+      method: "put",
+      headers: { Authorization: `${state?.user?.access_token}` },
+      data: { _id, completed, dateCompleted },
+    })
+  );
 
   function handleCheck() {
-    const updatedData = {
-      id: id,
-      title: title,
-      description: description,
-      dateCreated: dateCreated,
-      author: author,
-      dateCompleted: date.toDateString() + "  " + date.toLocaleTimeString(),
+    const updateData1 = {
+      dateCompleted: completed
+        ? ""
+        : date.toDateString() + "  " + date.toLocaleTimeString(),
       completed: !completed,
     };
-    const { dateCompleted } = updatedData;
-    updatePost(updatedData);
-    dispatch({ type: "TOGGLE_POST", id, dateCompleted });
+    // const { dateCompleted } = updateData1;
+    updatePost(_id, updateData1.completed, updateData1.dateCompleted);
+
+    dispatch({
+      type: "TOGGLE_POST",
+      _id,
+      dateCompleted: updateData1.dateCompleted,
+    });
+    // dispatch({ type: "TOGGLE_POST", _id, dateCompleted });
   }
 
   function handleDelete() {
-    const updatedData1 = {
-      id: id,
-      title: title,
-      description: description,
-      dateCreated: dateCreated,
-      author: author,
-      dateCompleted: dateCompleted,
-      completed: completed,
-    };
-
-    deletePost(updatedData1);
-    dispatch({ type: "DELETE_POST", id });
+    deletePost(_id);
+    // dispatch({ type: "DELETE_POST", id });
   }
+  useEffect(() => {
+    if (deletedPost.isLoading === false && deletedPost.data) {
+      dispatch({ type: "DELETE_POST", _id });
+    }
+  }, [deletedPost]);
+
+  // useEffect(() => {
+  //   if (updatedPost.isLoading === false && updatedPost.data) {
+  //     dispatch({ type: "TOGGLE_POST", _id, dateCompleted: "done" });
+  //   }
+  // }, [updatedPost]);
 
   function renderDateCompleted() {
     if (completed) {
@@ -94,7 +105,7 @@ export default function Post({
       <br />
       <i>
         Written by:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-        <b>{author}</b>
+        <b>{user.userName}</b>
         <br />
         <button type="button" name="deleteButton" onClick={handleDelete}>
           Delete Task

@@ -1,9 +1,10 @@
 function userReducer(state, action) {
   switch (action.type) {
     case "LOGIN":
-      return action.userName;
-    case "REGISTER":
-      return action.userName;
+      return {
+        userName: action.userName,
+        access_token: action.access_token,
+      };
     case "LOGOUT":
       return "";
     default:
@@ -21,12 +22,12 @@ function postReducer(state, action) {
         author: action.author,
         completed: action.completed,
         dateCompleted: action.dateCompleted,
-        id: action.id,
+        _id: action._id,
       };
       return [newPost, ...state];
 
     case "TOGGLE_POST":
-      const index = state.findIndex((object) => object.id === action.id);
+      const index = state.findIndex((object) => object._id === action._id);
       let toggleValue = state[index].completed;
       toggleValue = !toggleValue;
       const updatedObject = {
@@ -39,13 +40,16 @@ function postReducer(state, action) {
       return newState;
 
     case "DELETE_POST":
-      const index1 = state.findIndex((object) => object.id === action.id);
+      const index1 = state.findIndex((object) => object._id === action._id);
       const newState1 = [...state.slice(0, index1), ...state.slice(index1 + 1)];
 
       return newState1;
 
     case "FETCH_POSTS":
       return action.posts;
+
+    case "CLEAR_POSTS":
+      return [];
 
     default:
       return state;

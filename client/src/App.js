@@ -15,15 +15,23 @@ function App() {
   const { user } = state;
 
   const [posts, getPosts] = useResource(() => ({
-    url: "/posts",
+    url: "/post",
     method: "get",
+    headers: { Authorization: `${state?.user?.access_token}` },
   }));
 
-  useEffect(getPosts, []);
+  useEffect(() => {
+    if (user.userName) {
+      getPosts();
+    }
+  }, [state?.user?.access_token]);
 
   useEffect(() => {
-    if (posts && posts.data) {
-      dispatch({ type: "FETCH_POSTS", posts: posts.data.reverse() });
+    if (posts && posts.isLoading === false && posts.data) {
+      dispatch({ type: "FETCH_POSTS", posts: posts.data.posts.reverse() });
+    }
+    if (posts.error) {
+      dispatch({ type: "CLEAR_POSTS" });
     }
   }, [posts]);
 
@@ -65,7 +73,7 @@ function App() {
     <StateContext.Provider value={{ state, dispatch }}>
       <div style={{ padding: "10px" }}>
         <UserBar />
-        <div>{user && <CreatePost />}</div>
+        <div>{user.userName && <CreatePost />}</div>
         <PostList />
       </div>
     </StateContext.Provider>

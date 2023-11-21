@@ -9,9 +9,10 @@ export default function Logout() {
       onSubmit={(e) => {
         e.preventDefault();
         dispatch({ type: "LOGOUT" });
+        dispatch({ type: "CLEAR_POSTS" });
       }}
     >
-      Logged in as: &nbsp; <b>{user}</b>
+      Logged in as: &nbsp; <b>{user.userName}</b>
       <br />
       <input type="submit" value="Logout" style={{ marginTop: "10px" }} />
     </form>
